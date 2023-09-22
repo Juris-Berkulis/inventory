@@ -3,6 +3,7 @@ import BaseSkeleton from './base/BaseSkeleton.vue';
 import IconCross from './icons/IconCross.vue';
 import BaseBtn from './base/BaseBtn.vue';
 import type { InventoryItem } from '@/assets/data/data';
+import { ref, type Ref } from 'vue';
 
 interface Props {
     inventoryItem: InventoryItem | null,
@@ -16,6 +17,9 @@ const emit = defineEmits(['update:isShowCurtain']);
 const closeCurtain = (): void => {
     emit('update:isShowCurtain', false);
 };
+
+const isShowConfirmation: Ref<boolean> = ref(false);
+const countForDelete: Ref<number> = ref(0);
 </script>
 
 <template>
@@ -32,10 +36,15 @@ const closeCurtain = (): void => {
         <BaseSkeleton class="skeleton" />
         <BaseSkeleton class="skeleton" />
     </div>
-    <BaseBtn class="btn">Удалить предмет</BaseBtn>
+    <BaseBtn class="deleteBtn" @click="isShowConfirmation = true">Удалить предмет</BaseBtn>
     <button class="crossBtn" @click="closeCurtain">
         <IconCross />
     </button>
+    <div class="confirmationWrapper" :class="{open: isShowConfirmation}">
+        <input class="input" v-model="countForDelete" type="number" placeholder="Введите количество">
+        <BaseBtn class="cancelBtn" @click="isShowConfirmation = false">Отмена</BaseBtn>
+        <BaseBtn class="okBtn">Подтвердить</BaseBtn>
+    </div>
 </div>
 </template>
 
@@ -100,7 +109,7 @@ const closeCurtain = (): void => {
     }
 }
 
-.btn {
+.deleteBtn {
     width: 100%;
     padding: 11px;
     border-radius: 8px;
@@ -118,5 +127,62 @@ const closeCurtain = (): void => {
     right: 8px;
     line-height: 0;
     color: #ffffff;
+}
+
+.confirmationWrapper {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateY(100%);
+    transition: transform 1s linear;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid var(--Primary-Border, #4d4d4d);
+    background-color: rgba(38, 38, 38, 0.60);
+    backdrop-filter: blur(8px);
+
+    &.open {
+        transform: translateY(0);
+    }
+}
+
+.input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid var(--Primary-Border, #4D4D4D);
+    background-color: var(--Seondary-BG, #262626);
+    color: #ffffff;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    outline: none;
+
+    &::placeholder {
+        opacity: 0.4;
+    }
+}
+
+.cancelBtn {
+    padding: 8px;
+    background-color: var(--Primary-White, #ffffff);
+    color: var(--Primary-Black, #2d2d2d);
+
+    &:hover {
+        background-color: #cccccc;
+    }
+}
+
+.okBtn {
+    padding: 8px;
+    background-color: var(--Primary-Red, #fa7272);
+    color: var(--Primary-White, #ffffff);
+
+    &:hover {
+        background-color: var(--Red-Hover, #ff8888);
+    }
 }
 </style>
