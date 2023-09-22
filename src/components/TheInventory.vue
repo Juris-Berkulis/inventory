@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { data, type Data, type InventoryItem } from '@/assets/data/data';
+import { dataJSON, type Data, type InventoryItem } from '@/assets/data/data';
 import TheField from './TheField.vue';
 import TheMain from './TheMain.vue';
-import { provide, reactive, ref } from 'vue';
+import { provide, reactive, ref, watch } from 'vue';
 import TheFooter from './TheFooter.vue';
 import { selectedCellKey, type SelectedCell, type SelecteCell, deleteInventoryKey, type DeleteInventoryKey } from '@/composables/keys';
 
-const dataObj: Data = reactive(data);
+const dataObjKey = 'dataObjKey';
+
+const dataObj: Data = reactive(JSON.parse(localStorage.getItem(dataObjKey) || dataJSON));
 const selectedCell: SelectedCell = ref(null);
 
 const selecteCell: SelecteCell = (newSelectedCell) => {
@@ -49,6 +51,10 @@ const deleteInventory: DeleteInventoryKey = (cellIndex, deletedCountStr) => {
 };
 
 provide(deleteInventoryKey, deleteInventory);
+
+watch(dataObj, () => {
+    localStorage.setItem(dataObjKey, JSON.stringify(dataObj));
+});
 </script>
 
 <template>

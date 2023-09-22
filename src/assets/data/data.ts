@@ -20,7 +20,7 @@ export interface Data {
     inventoryObj: InventoryObj,
 };
 
-export const data: Data = {
+const data: Data = {
     main: {
         description: 'Описание блока main',
         src: `/assets/img/main.png`,
@@ -49,3 +49,5 @@ export const data: Data = {
         },
     },
 };
+
+export const dataJSON: string = JSON.stringify(data);
