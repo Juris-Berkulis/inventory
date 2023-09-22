@@ -3,23 +3,43 @@ import BaseSkeleton from './base/BaseSkeleton.vue';
 import IconCross from './icons/IconCross.vue';
 import BaseBtn from './base/BaseBtn.vue';
 import type { InventoryItem } from '@/assets/data/data';
-import { ref, type Ref } from 'vue';
+import { inject, ref, type Ref } from 'vue';
+import { deleteInventoryKey, type DeleteInventoryKey } from '@/composables/keys';
 
 interface Props {
     inventoryItem: InventoryItem | null,
     isShowCurtain: boolean,
+    selectedCell: number | null,
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const emit = defineEmits(['update:isShowCurtain']);
 
+const deleteInventory = inject<DeleteInventoryKey>(deleteInventoryKey);
+
+const isShowConfirmation: Ref<boolean> = ref(false);
+const countForDelete: Ref<string> = ref('');
+
+const resetConfirmationWindow = (): void => {
+    countForDelete.value = '';
+    isShowConfirmation.value = false;
+};
+
 const closeCurtain = (): void => {
+    resetConfirmationWindow();
     emit('update:isShowCurtain', false);
 };
 
-const isShowConfirmation: Ref<boolean> = ref(false);
-const countForDelete: Ref<number> = ref(0);
+const deleteSelectedCountOfInventories = (): void => {
+    if (deleteInventory && props.selectedCell) {
+        const success = deleteInventory(props.selectedCell, countForDelete.value);
+
+        if (success) {
+            resetConfirmationWindow();
+        }
+    }
+};
 </script>
 
 <template>
@@ -41,9 +61,9 @@ const countForDelete: Ref<number> = ref(0);
         <IconCross />
     </button>
     <div class="confirmationWrapper" :class="{open: isShowConfirmation}">
-        <input class="input" v-model="countForDelete" type="number" placeholder="Введите количество">
+        <input class="input" v-model.trim="countForDelete" type="number" placeholder="Введите количество" min="0" :max="inventoryItem?.count">
         <BaseBtn class="cancelBtn" @click="isShowConfirmation = false">Отмена</BaseBtn>
-        <BaseBtn class="okBtn">Подтвердить</BaseBtn>
+        <BaseBtn class="okBtn" @click="deleteSelectedCountOfInventories">Подтвердить</BaseBtn>
     </div>
 </div>
 </template>
@@ -136,8 +156,10 @@ const countForDelete: Ref<number> = ref(0);
     left: 0;
     transform: translateY(100%);
     transition: transform 1s linear;
+    padding: 20px 21px;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     border: 1px solid var(--Primary-Border, #4d4d4d);
     background-color: rgba(38, 38, 38, 0.60);
     backdrop-filter: blur(8px);
@@ -149,6 +171,7 @@ const countForDelete: Ref<number> = ref(0);
 
 .input {
     width: 100%;
+    margin-bottom: 20px;
     padding: 12px;
     border-radius: 4px;
     border: 1px solid var(--Primary-Border, #4D4D4D);
@@ -167,6 +190,8 @@ const countForDelete: Ref<number> = ref(0);
 }
 
 .cancelBtn {
+    width: 100%;
+    max-width: 88px;
     padding: 8px;
     background-color: var(--Primary-White, #ffffff);
     color: var(--Primary-Black, #2d2d2d);
@@ -177,6 +202,8 @@ const countForDelete: Ref<number> = ref(0);
 }
 
 .okBtn {
+    width: 100%;
+    max-width: 112px;
     padding: 8px;
     background-color: var(--Primary-Red, #fa7272);
     color: var(--Primary-White, #ffffff);

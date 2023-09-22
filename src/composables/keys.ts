@@ -9,3 +9,7 @@ export interface SelectedCellKey {
 };
 
 export const selectedCellKey = Symbol() as InjectionKey<SelectedCellKey>;
+
+export type DeleteInventoryKey = (cellIndex: number, deletedCountStr: string) => boolean;
+
+export const deleteInventoryKey = Symbol() as InjectionKey<DeleteInventoryKey>;

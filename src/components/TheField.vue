@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { inject, type ComputedRef, computed, type Ref, ref } from 'vue';
+import { inject, type Ref, ref, type ComputedRef, computed } from 'vue';
 import FieldCell from './FieldCell.vue';
 import TheCurtain from './TheCurtain.vue';
-import { selectedCellKey, type SelectedCellKey } from '@/composables/keys';
+import { selectedCellKey, type SelectedCell, type SelectedCellKey } from '@/composables/keys';
 import type { InventoryItem, InventoryObj } from '@/assets/data/data';
 
 interface Props {
@@ -16,20 +16,18 @@ defineEmits(['moveInventory']);
 const selectedCellObjFromInject = inject<SelectedCellKey>(selectedCellKey);
 
 const isShowCurtain: Ref<boolean> = ref(false);
+const selectedCell: SelectedCell = ref(null);
 
 const changeSelectedCell = (cellIndex: number) => {
     if (props.inventoryObj[cellIndex]) {
         selectedCellObjFromInject?.selecteCell(cellIndex);
+        selectedCell.value = cellIndex;
         isShowCurtain.value = true;
     }
 };
 
 const inventoryItem: ComputedRef<InventoryItem | null> = computed(() => {
-    if (selectedCellObjFromInject?.selectedCell.value) {
-        return props.inventoryObj[selectedCellObjFromInject?.selectedCell.value]
-    } else {
-        return null
-    }
+    return selectedCell.value && props.inventoryObj[selectedCell.value] ? props.inventoryObj[selectedCell.value] : null
 });
 </script>
 
@@ -46,8 +44,9 @@ const inventoryItem: ComputedRef<InventoryItem | null> = computed(() => {
         :cellIndex="cellIndex" 
     />
     <TheCurtain 
-        :inventoryItem="inventoryItem" 
         v-model:isShowCurtain="isShowCurtain"
+        :inventoryItem="inventoryItem" 
+        :selectedCell="selectedCell"
     />
 </div>
 </template>

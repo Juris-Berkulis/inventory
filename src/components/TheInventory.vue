@@ -4,7 +4,7 @@ import TheField from './TheField.vue';
 import TheMain from './TheMain.vue';
 import { provide, reactive, ref } from 'vue';
 import TheFooter from './TheFooter.vue';
-import { selectedCellKey, type SelectedCell, type SelecteCell } from '@/composables/keys';
+import { selectedCellKey, type SelectedCell, type SelecteCell, deleteInventoryKey, type DeleteInventoryKey } from '@/composables/keys';
 
 const dataObj: Data = reactive(data);
 const selectedCell: SelectedCell = ref(null);
@@ -23,13 +23,32 @@ const moveInventory = (event: DragEvent, newCellIndex: number): void => {
             if (selectedCell.value === oldCellIndex) {
                 selectedCell.value = newCellIndex;
             }
-            
+
             const movedInventoryItem: InventoryItem = dataObj.inventoryObj[oldCellIndex];
             delete dataObj.inventoryObj[oldCellIndex];
             dataObj.inventoryObj[newCellIndex] = movedInventoryItem;
         }
     }
 };
+
+const deleteInventory: DeleteInventoryKey = (cellIndex, deletedCountStr) => {
+    const deletedCount: number = Number(deletedCountStr);
+    const deletedInventory: InventoryItem = dataObj.inventoryObj[cellIndex];
+
+    if (deletedInventory && deletedCount > 0) {
+        if (deletedInventory.count > deletedCount) {
+            deletedInventory.count -= deletedCount;
+        } else {
+            delete dataObj.inventoryObj[cellIndex];
+        }
+
+        return true
+    }
+
+    return false
+};
+
+provide(deleteInventoryKey, deleteInventory);
 </script>
 
 <template>
