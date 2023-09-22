@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import BaseSceleton from '@/components/base/BaseSkeleton.vue';
+import IconCross from '@/components/icons/IconCross.vue';
 </script>
 
 <template>
 <footer class="footer">
     <BaseSceleton class="skeleton" />
+    <button class="crossBtn">
+        <IconCross />
+    </button>
 </footer>
 </template>
 
@@ -21,5 +25,13 @@ import BaseSceleton from '@/components/base/BaseSkeleton.vue';
 
 .skeleton {
     height: 100%;
+}
+
+.crossBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    line-height: 0;
+    color: #ffffff;
 }
 </style>
