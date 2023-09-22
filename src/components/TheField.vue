@@ -29,6 +29,7 @@ const saveOldCellIndex = (event: DragEvent, oldCellIndex: number): void => {
         @drop="(event: DragEvent) => $emit('moveInventory', event, cellIndex)"
     >
         <img 
+            class="img"
             v-if="inventoryObj[cellIndex]" 
             draggable 
             @dragstart="(event: DragEvent) => saveOldCellIndex(event, cellIndex)" 
@@ -41,8 +42,9 @@ const saveOldCellIndex = (event: DragEvent, oldCellIndex: number): void => {
 
 <style scoped lang="scss">
 .field {
-    width: 525px;
-    height: 500px;
+    width: 100%;
+    max-width: 525px;
+    min-height: 500px;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     border-radius: 12px;
@@ -52,9 +54,15 @@ const saveOldCellIndex = (event: DragEvent, oldCellIndex: number): void => {
 }
 
 .cell {
+    padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 1px solid var(--Primary-Border, #4d4d4d);
+}
+
+.img {
+    width: 100%;
+    max-width: 54px;
 }
 </style>
