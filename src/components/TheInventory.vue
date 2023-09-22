@@ -2,10 +2,18 @@
 import { data, type Data, type InventoryItem } from '@/assets/data/data';
 import TheField from './TheField.vue';
 import TheMain from './TheMain.vue';
-import { reactive } from 'vue';
+import { provide, reactive, ref } from 'vue';
 import TheFooter from './TheFooter.vue';
+import { selectedCellKey, type SelectedCell, type SelecteCell } from '@/composables/keys';
 
 const dataObj: Data = reactive(data);
+const selectedCell: SelectedCell = ref(null);
+
+const selecteCell: SelecteCell = (newSelectedCell) => {
+    selectedCell.value = newSelectedCell;
+};
+
+provide(selectedCellKey, {selectedCell, selecteCell});
 
 const moveInventory = (event: DragEvent, newCellIndex: number): void => {
     if (event.dataTransfer) {

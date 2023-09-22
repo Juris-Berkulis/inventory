@@ -1,14 +1,36 @@
 <script setup lang="ts">
-import type { InventoryObj } from '@/assets/data/data';
+import { inject, type ComputedRef, computed, type Ref, ref } from 'vue';
 import FieldCell from './FieldCell.vue';
+import TheCurtain from './TheCurtain.vue';
+import { selectedCellKey, type SelectedCellKey } from '@/composables/keys';
+import type { InventoryItem, InventoryObj } from '@/assets/data/data';
 
 interface Props {
     inventoryObj: InventoryObj,
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 defineEmits(['moveInventory']);
+
+const selectedCellObjFromInject = inject<SelectedCellKey>(selectedCellKey);
+
+const isShowCurtain: Ref<boolean> = ref(false);
+
+const changeSelectedCell = (cellIndex: number) => {
+    if (props.inventoryObj[cellIndex]) {
+        selectedCellObjFromInject?.selecteCell(cellIndex);
+        isShowCurtain.value = true;
+    }
+};
+
+const inventoryItem: ComputedRef<InventoryItem | null> = computed(() => {
+    if (selectedCellObjFromInject?.selectedCell.value) {
+        return props.inventoryObj[selectedCellObjFromInject?.selectedCell.value]
+    } else {
+        return null
+    }
+});
 </script>
 
 <template>
@@ -19,14 +41,20 @@ defineEmits(['moveInventory']);
         @dragenter.prevent=""
         @dragover.prevent="" 
         @drop="(event: DragEvent) => $emit('moveInventory', event, cellIndex)"
+        @click="changeSelectedCell(cellIndex)"
         :inventoryItem="inventoryObj[cellIndex]" 
         :cellIndex="cellIndex" 
+    />
+    <TheCurtain 
+        :inventoryItem="inventoryItem" 
+        v-model:isShowCurtain="isShowCurtain"
     />
 </div>
 </template>
 
 <style scoped lang="scss">
 .field {
+    position: relative;
     width: 100%;
     max-width: 525px;
     min-height: 500px;
@@ -37,5 +65,9 @@ defineEmits(['moveInventory']);
     border: 1px solid var(--Primary-Border, #4d4d4d);
     background-color: var(--Seondary-BG, #262626);
     overflow: hidden;
+
+    @media (max-width: 849px) {
+        min-width: 100%;
+    }
 }
 </style>
