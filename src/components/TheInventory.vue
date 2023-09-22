@@ -20,6 +20,10 @@ const moveInventory = (event: DragEvent, newCellIndex: number): void => {
         const oldCellIndex: number = parseInt(event.dataTransfer.getData('oldCellIndex'));
 
         if (!dataObj.inventoryObj[newCellIndex]) {
+            if (selectedCell.value === oldCellIndex) {
+                selectedCell.value = newCellIndex;
+            }
+            
             const movedInventoryItem: InventoryItem = dataObj.inventoryObj[oldCellIndex];
             delete dataObj.inventoryObj[oldCellIndex];
             dataObj.inventoryObj[newCellIndex] = movedInventoryItem;

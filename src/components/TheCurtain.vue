@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { selectedCellKey, type SelectedCellKey } from '@/composables/keys';
 import BaseSkeleton from './base/BaseSkeleton.vue';
 import IconCross from './icons/IconCross.vue';
-import { inject } from 'vue';
 import BaseBtn from './base/BaseBtn.vue';
 import type { InventoryItem } from '@/assets/data/data';
 
