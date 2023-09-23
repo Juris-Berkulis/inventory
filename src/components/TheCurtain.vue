@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import BaseSkeleton from './base/BaseSkeleton.vue';
-import IconCross from './icons/IconCross.vue';
-import BaseBtn from './base/BaseBtn.vue';
-import type { InventoryItem } from '@/assets/data/data';
 import { inject, ref, type Ref } from 'vue';
+import BaseSkeleton from '@/components/base/BaseSkeleton.vue';
+import BaseBtn from '@/components/base/BaseBtn.vue';
+import IconCross from '@/components/icons/IconCross.vue';
+import type { InventoryItem } from '@/assets/data/data';
 import { deleteInventoryKey, type DeleteInventoryKey } from '@/composables/keys';
 
 interface Props {
@@ -61,7 +61,14 @@ const deleteSelectedCountOfInventories = (): void => {
         <IconCross />
     </button>
     <div class="confirmationWrapper" :class="{open: isShowConfirmation}">
-        <input class="input" v-model.trim="countForDelete" type="number" placeholder="Введите количество" min="0" :max="inventoryItem?.count">
+        <input 
+            class="input" 
+            v-model.trim="countForDelete" 
+            type="number" 
+            placeholder="Введите количество" 
+            min="0" 
+            :max="inventoryItem?.count"
+        >
         <BaseBtn class="cancelBtn" @click="isShowConfirmation = false">Отмена</BaseBtn>
         <BaseBtn class="okBtn" @click="deleteSelectedCountOfInventories">Подтвердить</BaseBtn>
     </div>

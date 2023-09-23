@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { inject, type Ref, ref, type ComputedRef, computed } from 'vue';
-import FieldCell from './FieldCell.vue';
-import TheCurtain from './TheCurtain.vue';
-import { selectedCellKey, type SelectedCell, type SelectedCellKey } from '@/composables/keys';
+import FieldCell from '@/components/FieldCell.vue';
+import TheCurtain from '@/components/TheCurtain.vue';
 import type { InventoryItem, InventoryObj } from '@/assets/data/data';
+import { selectedCellKey, type SelectedCell, type SelectedCellKey } from '@/composables/keys';
 
 interface Props {
     inventoryObj: InventoryObj,
@@ -27,7 +27,9 @@ const changeSelectedCell = (cellIndex: number) => {
 };
 
 const inventoryItem: ComputedRef<InventoryItem | null> = computed(() => {
-    return selectedCell.value && props.inventoryObj[selectedCell.value] ? props.inventoryObj[selectedCell.value] : null
+    return selectedCell.value && props.inventoryObj[selectedCell.value] 
+        ? props.inventoryObj[selectedCell.value] 
+        : null
 });
 </script>
 

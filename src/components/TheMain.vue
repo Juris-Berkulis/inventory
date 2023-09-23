@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import BaseSkeleton from '@/components/base/BaseSkeleton.vue';
 import type { Main } from '@/assets/data/data';
-import BaseSkeleton from './base/BaseSkeleton.vue';
 
 interface Props {
     main: Main,

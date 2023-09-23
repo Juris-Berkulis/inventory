@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import { dataJSON, type Data, type InventoryItem } from '@/assets/data/data';
-import TheField from './TheField.vue';
-import TheMain from './TheMain.vue';
 import { provide, reactive, ref, watch } from 'vue';
-import TheFooter from './TheFooter.vue';
-import { selectedCellKey, type SelectedCell, type SelecteCell, deleteInventoryKey, type DeleteInventoryKey } from '@/composables/keys';
+import TheField from '@/components/TheField.vue';
+import TheMain from '@/components/TheMain.vue';
+import TheFooter from '@/components/TheFooter.vue';
+import { dataJSON, type Data, type InventoryItem } from '@/assets/data/data';
+import { 
+    selectedCellKey, 
+    type SelectedCell, 
+    type SelecteCell, 
+    deleteInventoryKey, 
+    type DeleteInventoryKey 
+} from '@/composables/keys';
 
 const dataObjKey = 'dataObjKey';
 
