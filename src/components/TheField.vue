@@ -16,19 +16,18 @@ defineEmits(['moveInventory']);
 const selectedCellObjFromInject = inject<SelectedCellKey>(selectedCellKey);
 
 const isShowCurtain: Ref<boolean> = ref(false);
-const selectedCell: SelectedCell = ref(null);
 
 const changeSelectedCell = (cellIndex: number) => {
     if (props.inventoryObj[cellIndex]) {
         selectedCellObjFromInject?.selecteCell(cellIndex);
-        selectedCell.value = cellIndex;
         isShowCurtain.value = true;
     }
 };
 
 const inventoryItem: ComputedRef<InventoryItem | null> = computed(() => {
-    return selectedCell.value && props.inventoryObj[selectedCell.value] 
-        ? props.inventoryObj[selectedCell.value] 
+    return selectedCellObjFromInject?.selectedCell.value 
+        && props.inventoryObj[selectedCellObjFromInject?.selectedCell.value] 
+        ? props.inventoryObj[selectedCellObjFromInject?.selectedCell.value] 
         : null
 });
 </script>
@@ -48,7 +47,7 @@ const inventoryItem: ComputedRef<InventoryItem | null> = computed(() => {
     <TheCurtain 
         v-model:isShowCurtain="isShowCurtain"
         :inventoryItem="inventoryItem" 
-        :selectedCell="selectedCell"
+        :selectedCell="selectedCellObjFromInject?.selectedCell.value || null"
     />
 </div>
 </template>
