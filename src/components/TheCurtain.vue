@@ -167,7 +167,7 @@ const deleteSelectedCountOfInventories = (): void => {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    border: 1px solid var(--Primary-Border, #4d4d4d);
+    border-top: 1px solid var(--Primary-Border, #4d4d4d);
     background-color: rgba(38, 38, 38, 0.60);
     backdrop-filter: blur(8px);
 

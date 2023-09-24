@@ -38,7 +38,8 @@ const saveOldCellIndex = (event: DragEvent, oldCellIndex: number): void => {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid var(--Primary-Border, #4d4d4d);
+    background-color: var(--Seondary-BG, #262626);
+    transition: background-color 0.2s linear;
 
     &.full {
         cursor: pointer;

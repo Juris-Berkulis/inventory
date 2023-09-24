@@ -62,9 +62,10 @@ const inventoryItem: ComputedRef<InventoryItem | null> = computed(() => {
     display: grid;
     grid-template-rows: repeat(5, 1fr);
     grid-template-columns: repeat(5, 1fr);
+    grid-gap: 1px;
     border-radius: 12px;
     border: 1px solid var(--Primary-Border, #4d4d4d);
-    background-color: var(--Seondary-BG, #262626);
+    background-color: var(--Primary-Border, #4d4d4d);
     overflow: hidden;
 
     @media (max-width: 849px) {
